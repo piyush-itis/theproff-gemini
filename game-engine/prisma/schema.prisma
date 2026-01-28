@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-py"
+}
+
+datasource db {
+   provider = "postgresql"
+  url      = env("DATABASE_URL")
+  }
+
+model Agent {
+  id           String   @id @default(cuid())
+  creator      String
+  systemPrompt String
+  tools        String
+  crackTool    String
+  prizePool    Float
+  currentEarnings Float @default(0)
+  isCracked    Boolean  @default(false)
+  crackedBy    String?
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  messages     Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  agentId   String
+  agent     Agent    @relation(fields: [agentId], references: [id])
+  sender    String
+  content   String
+  toolUsed  String?
+  createdAt DateTime @default(now())
+}// Prisma change 1
+// Prisma change 1
